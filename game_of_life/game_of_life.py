@@ -31,9 +31,21 @@ def render(state):
     print("---"*len(state))
     
 state = random_state(20, 20)
-render(state)
+# render(state)
 
 # milestone 3: next_board_state
+def sum_neighbors(cell_i, board):
+    i = cell_i[0]
+    j = cell_i[1]
+    neighbors = []
+    neighbors.extend(board[i-1][j-1:j+2]) # first row of neighboring cells
+    neighbors.extend(board[i+0][j-1:j+2]) # second, this includes active cell
+    neighbors.extend(board[i+1][j-1:j+2]) # third
+    del neighbors[4] # removes the active cell, which will always be the fifth element
+    return sum(neighbors)
+
+# print(sum_neighbors([1, 1], state))
+
 
 def next_board_state(init_state):
     if len(init_state) * len(init_state[0]) < 9:
@@ -41,10 +53,20 @@ def next_board_state(init_state):
     # first take a cell
     for i in range(1, len(init_state)-1):
         for j in range(1, len(init_state[i])-1):
-            current = init_state[i][j]
-            # neighbors = 
+            current_i = [i, j]
+            live_neighbors = sum_neighbors(current_i, init_state)
 
+            if live_neighbors <= 1:
+                init_state[i][j] = 0
+            elif live_neighbors <= 3:
+                init_state[i][j] = 1
+            else:
+                init_state[i][j] = 0
+    return init_state
+render(state)             
+board_state = next_board_state(state)
+render(board_state)
     # get its next 8 neighbors 
     # sum their values
     # update the state of the cell based on the sum of neighbor values
-    
+
