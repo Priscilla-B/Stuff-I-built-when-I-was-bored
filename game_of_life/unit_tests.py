@@ -14,7 +14,7 @@ if __name__ == "__main__":
     ]
     expected_next_state1 = [
         [0,0,0],
-        [0,0,0],
+        [0,0,0], 
         [0,0,0]
     ]
     actual_next_state1 = next_board_state(init_state1)
