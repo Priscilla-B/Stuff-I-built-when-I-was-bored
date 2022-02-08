@@ -39,16 +39,18 @@ def sum_neighbors(cell_i, board):
     n_i = len(board)- 1
     n_j = len(board[0]) - 1
     neighbors = []
+
+    # for corner cells
     if cell_i == [0, 0] or cell_i == [0, n_j] or cell_i == [n_i, 0] or cell_i == [n_i, n_j]:
         return -1
+
+    # for edge cells
 
     if i == 0:
         neighbors.extend(board[i+n_i][j-1:j+2])
         neighbors.extend(board[i+0][j-1:j+2])
         neighbors.extend(board[i+1][j-1:j+2])
         
-        
-    
     elif i == n_i:
         neighbors.extend(board[i+-1][j-1:j+2])
         neighbors.extend(board[i+0][j-1:j+2])
@@ -70,6 +72,7 @@ def sum_neighbors(cell_i, board):
         neighbors.extend(board[i+1][j-1:j+1])
         neighbors.append(board[i+1][n_j-n_j])
 
+    # for all other cells
     else:
         neighbors.extend(board[i-1][j-1:j+2]) # first row of neighboring cells
         neighbors.extend(board[i+0][j-1:j+2]) # second, this includes active cell
