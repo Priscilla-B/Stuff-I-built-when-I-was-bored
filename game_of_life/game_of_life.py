@@ -116,25 +116,22 @@ def next_board_state(init_state):
     for i in range(len(init_state)):
         for j in range(len(init_state[i])):
             live_neighbors = sum_neighbors([i, j], init_state)
+            
+            if init_state[i][j] == 0 and live_neighbors == 3:
+                new_state[i][j] == 1
+            # dead cell comes alive only if live_neigbors are exactly 3
 
-            if live_neighbors < 0:
-                init_state[i][j] =  init_state[i][j] #init state remains unchanged for corner cells
-            elif live_neighbors <= 1:
-                init_state[i][j] = 0
-            elif live_neighbors <= 3:
-                init_state[i][j] = 1
-            else:
-                init_state[i][j] = 0
+            if init_state[i][j] == 1 and live_neighbors ==2 or live_neighbors == 3:
+                new_state[i][j] = 1
+           # live cell only stays live when it has exactly 2 or 3 live_neighbors
+
+           # since the all cells in the new state are already dead, there's no 
+           # need to set cells that don't meet the above criteria dead again
     return init_state
 
 state = random_state(10, 10)
-a_dead_state = dead_state(10,10)
-render(a_dead_state)
 render(state)  
-# print("****************************************************")           
-# board_state = next_board_state(state)
-# render(board_state)
-# # print(state)
+
 
 
 
