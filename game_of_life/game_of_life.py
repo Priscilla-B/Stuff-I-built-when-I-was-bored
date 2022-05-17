@@ -121,7 +121,7 @@ def next_board_state(init_state):
                 new_state[i][j] == 1
             # dead cell comes alive only if live_neigbors are exactly 3
 
-            if init_state[i][j] == 1 and live_neighbors ==2 or live_neighbors == 3:
+            if init_state[i][j] == 1 and (live_neighbors == 2 or live_neighbors == 3):
                 new_state[i][j] = 1
            # live cell only stays live when it has exactly 2 or 3 live_neighbors
 
