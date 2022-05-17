@@ -34,18 +34,24 @@ def random_state(width:int, height:int) -> list[list]:
 
 # milestone 2: pretty print to the terminal
 def render(state):
-    "uses green to represent live cells (value of 1) and red to represent dead cells (value of 1)"
-    print("---"*len(state))
+    """
+    Takes a given board state (state) and pretty prints the state to the terminal
+    Uses a star(*) to represent live cells (value of 1) and space to represent dead cells (value of 1)
+    """
+    
+    # print("- "*len(state[0]))
+    print("")
     for i in range(len(state)):
         row = ''
         for j in range(len(state[i])):
             if state[i][j] == 0:
-                char = '🟥'
+                char = ' '
             else:
-                char = '🟩'
+                char = '*'
             row += char
         print("|", row, "|")
-    print("---"*len(state))
+    # print("- "*len(state[0]))
+    print("")
     
 
 
@@ -121,13 +127,14 @@ def next_board_state(init_state):
                 init_state[i][j] = 0
     return init_state
 
-# state = random_state(20, 20)
-# render(state)  
+state = random_state(10, 10)
+a_dead_state = dead_state(10,10)
+render(a_dead_state)
+render(state)  
 # print("****************************************************")           
 # board_state = next_board_state(state)
 # render(board_state)
 # # print(state)
-print(dead_state(5, 6))
-print(random_state(5, 6))
+
 
 
