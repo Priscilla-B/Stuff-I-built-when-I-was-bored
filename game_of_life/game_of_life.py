@@ -111,8 +111,10 @@ def sum_neighbors(cell_i, board):
 def next_board_state(init_state):
     if len(init_state) * len(init_state[0]) < 9:
         raise Exception("length and height of initial stage is too small to compute")
-    # first take a cell
-    new_state = dead_state(len(init_state[0]), len(init_state))
+    
+    new_state = init_state
+    # create a copy of init state into a new state so that
+    # cells are not modified before their statuses are updated
     for i in range(len(init_state)):
         for j in range(len(init_state[i])):
             live_neighbors = sum_neighbors([i, j], init_state)
@@ -125,13 +127,12 @@ def next_board_state(init_state):
                 new_state[i][j] = 1
            # live cell only stays live when it has exactly 2 or 3 live_neighbors
 
-           # since the all cells in the new state are already dead, there's no 
-           # need to set cells that don't meet the above criteria dead again
+           # there's no need to set the rest of the cells 
     return new_state
 
 if __name__ == "__main__":
     # makes sure this code runs only when I directly run it
-    # and not when file is called in a module
+    # and not when file is imported as a module
     state = random_state(10, 10)
     next_state = next_board_state(state)
     # render(state)  
