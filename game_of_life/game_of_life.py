@@ -129,11 +129,15 @@ def next_board_state(init_state):
            # need to set cells that don't meet the above criteria dead again
     return new_state
 
-state = random_state(10, 10)
-next_state = next_board_state(state)
-render(state)  
-print("**************************************************")
-render(next_state)
+if __name__ == "__main__":
+    # makes sure this code runs only when I directly run it
+    # and not when file is called in a module
+    state = random_state(10, 10)
+    next_state = next_board_state(state)
+    # render(state)  
+    # print("**************************************************")
+    # render(next_state)
+    print(next_state)
 
 
 
