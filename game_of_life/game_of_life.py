@@ -1,5 +1,22 @@
 # milestone 1: store the board state
 import random
+
+def dead_state(width:int, height:int):
+    """
+    Creates a two dimensional array based on given width and height values.
+    Each element of the array has a value of 0, to indicate a dead cell.
+    """
+    dead_board = []
+    for i in range(height):
+        dead_board.append([0]*width)
+        # don't use a variable to store [0]*width before appending it to dead_board
+        # if you do that, all the inner lists in the nested list will point to the 
+        # same variable and will be stored at the same location
+        # this will look okay here, but will affect your random_state function
+        # as all the inner lists will have the same random state
+    
+    return dead_board
+
 def random_state(width:int, height:int) -> list[list]:
     """
     Creates a two dimensional array based on given width and height values.
@@ -8,9 +25,10 @@ def random_state(width:int, height:int) -> list[list]:
     of the game.
 
     """
-    board_state = []
-    for j in range(height):
-        board_state.append([random.randint(0,1) for i in range(width)])
+    board_state = dead_state(width, height)
+    for i in range(height):
+        for j in range(width):
+            board_state[i][j] = random.randint(0,1) 
     return board_state
 
 
@@ -88,6 +106,7 @@ def next_board_state(init_state):
     if len(init_state) * len(init_state[0]) < 9:
         raise Exception("length and height of initial stage is too small to compute")
     # first take a cell
+    new_state = dead_state()
     for i in range(len(init_state)):
         for j in range(len(init_state[i])):
             live_neighbors = sum_neighbors([i, j], init_state)
@@ -102,11 +121,13 @@ def next_board_state(init_state):
                 init_state[i][j] = 0
     return init_state
 
-state = random_state(20, 20)
-render(state)  
-print("****************************************************")           
-board_state = next_board_state(state)
-render(board_state)
-# print(state)
-    
+# state = random_state(20, 20)
+# render(state)  
+# print("****************************************************")           
+# board_state = next_board_state(state)
+# render(board_state)
+# # print(state)
+print(dead_state(5, 6))
+print(random_state(5, 6))
+
 
