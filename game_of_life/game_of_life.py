@@ -58,6 +58,15 @@ def render(state):
 
 # milestone 3: next_board_state
 def update_cell(cell_i, board):
+
+    """
+    This function takes the position of a cell on a board(a 2d layout of elements with 0s and 1s)
+    and the board itself. It then evaluates the number of neighbors of the given cell that are alive
+    (have a value of 1). The neighbors of a cell are the immediate 8 cells surround the cell to form
+    a 3x3 grid. Based on the value of the selected cell, if the sum of live neighbors meet specific
+    criteria, the cell's value is updated to be dead(0) or alive(1).
+    """
+
     i = cell_i[0]
     j = cell_i[1]
     width = len(board[0])
@@ -78,11 +87,6 @@ def update_cell(cell_i, board):
                 
             live_neighbors += board[x][y]
             
-    print("cell", cell)
-    print("live neighbors", live_neighbors)
-            
-    
-    
 
     if cell == 0 and live_neighbors == 3:
         return 1
@@ -95,39 +99,41 @@ def update_cell(cell_i, board):
            # since the all cells in the new state are already dead, there's no 
            # need to set cells that don't meet the above criteria dead again
 
-
     return 0
 
 
 
-# def next_board_state(init_state):
-#     if len(init_state) * len(init_state[0]) < 9:
-#         raise Exception("length and height of initial stage is too small to compute")
+def new_board_state(init_state):
 
-#     new_state = dead_state(len(init_state[0]), len(init_state))
+    """
+    This function takes a board initiated with random values of 0s and 1s and update each cell
+    on the board based on the value of the cell and the values of its neighbors as set out in the 
+    "update_cell" function.
+    """
+    
+    if len(init_state) * len(init_state[0]) < 9:
+        raise Exception("length and height of initial stage is too small to compute")
+
+    new_state = dead_state(len(init_state[0]), len(init_state))
 
     
-#     for i in range(len(init_state)):
-#         for j in range(len(init_state[i])):
-#             new_state[i][j] = update_cell([i, j], init_state)
-#     return new_state
+    for i in range(len(init_state)):
+        for j in range(len(init_state[i])):
+            new_state[i][j] = update_cell([i, j], init_state)
+    return new_state
         
             
             
-#     return new_state
-
 if __name__ == "__main__":
     # makes sure this code runs only when I directly run it
     # and not when file is imported as a module
     state = random_state(10, 10)
-    next_state = update_cell([9,9], state)
+    new_state = new_board_state(state)
 
-    # render(state)  
-    # print("**************************************************")
-    # render(next_state)
-    print(state)
-    print("***********************")
-    print(next_state)
+    render(state)  
+    print("**************************************************")
+    render(new_state)
+ 
 
     
 
