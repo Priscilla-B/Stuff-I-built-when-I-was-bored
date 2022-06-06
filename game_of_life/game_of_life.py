@@ -57,89 +57,79 @@ def render(state):
 
 
 # milestone 3: next_board_state
-def sum_neighbors(cell_i, board):
+def update_cell(cell_i, board):
     i = cell_i[0]
     j = cell_i[1]
-    n_i = len(board)- 1
-    n_j = len(board[0]) - 1
-    neighbors = []
+    width = len(board[0])
+    height = len(board)
+    cell = board[i][j]
+    live_neighbors = 0
 
-    # for corner cells
-    if cell_i == [0, 0] or cell_i == [0, n_j] or cell_i == [n_i, 0] or cell_i == [n_i, n_j]:
-        return -1
+    for x in range(i-1, i+2):
+        for y in range(j-1, j+2):
+            if x == i and y == j:
+                continue
 
-    # for edge cells
-
-    if i == 0:
-        neighbors.extend(board[i+n_i][j-1:j+2])
-        neighbors.extend(board[i+0][j-1:j+2])
-        neighbors.extend(board[i+1][j-1:j+2])
-        
-    elif i == n_i:
-        neighbors.extend(board[i+-1][j-1:j+2])
-        neighbors.extend(board[i+0][j-1:j+2])
-        neighbors.extend(board[i-n_i][j-1:j+2])
-    
-    elif j == 0:
-        neighbors.append(board[i-1][n_j])
-        neighbors.extend(board[i-1][j:j+2])
-        neighbors.append(board[i+0][n_j])
-        neighbors.extend(board[i+0][j:j+2])
-        neighbors.append(board[i+1][n_j])
-        neighbors.extend(board[i+1][j-1:j+2])
-
-    elif j == n_j:
-        neighbors.extend(board[i-1][j-1:j+1])
-        neighbors.append(board[i-1][n_j-n_j])
-        neighbors.extend(board[i+0][j-1:j+1])
-        neighbors.append(board[i+0][n_j-n_j])
-        neighbors.extend(board[i+1][j-1:j+1])
-        neighbors.append(board[i+1][n_j-n_j])
-
-    # for all other cells
-    else:
-        neighbors.extend(board[i-1][j-1:j+2]) # first row of neighboring cells
-        neighbors.extend(board[i+0][j-1:j+2]) # second, this includes active cell
-        neighbors.extend(board[i+1][j-1:j+2]) # third
-
-    del neighbors[4] # removes the active cell, which will always be the fifth element
-    return sum(neighbors)
-
-# print(sum_neighbors([1, 1], state))
-
-
-def next_board_state(init_state):
-    if len(init_state) * len(init_state[0]) < 9:
-        raise Exception("length and height of initial stage is too small to compute")
-    
-    new_state = init_state
-    # create a copy of init state into a new state so that
-    # cells are not modified before their statuses are updated
-    for i in range(len(init_state)):
-        for j in range(len(init_state[i])):
-            live_neighbors = sum_neighbors([i, j], init_state)
+            if x >= height:
+                x = i-x+1
+            if y >= width:
+                y = j-y+1
+            # indexing needs to restart at zero at the above edge cases
+                
+            live_neighbors += board[x][y]
             
-            if init_state[i][j] == 0 and live_neighbors == 3:
-                new_state[i][j] == 1
+    print("cell", cell)
+    print("live neighbors", live_neighbors)
+            
+    
+    
+
+    if cell == 0 and live_neighbors == 3:
+        return 1
             # dead cell comes alive only if live_neigbors are exactly 3
 
-            if init_state[i][j] == 1 and (live_neighbors == 2 or live_neighbors == 3):
-                new_state[i][j] = 1
+    if cell == 1 and (live_neighbors == 2 or live_neighbors == 3):
+            return 1
            # live cell only stays live when it has exactly 2 or 3 live_neighbors
 
-           # there's no need to set the rest of the cells 
-    return new_state
+           # since the all cells in the new state are already dead, there's no 
+           # need to set cells that don't meet the above criteria dead again
+
+
+    return 0
+
+
+
+# def next_board_state(init_state):
+#     if len(init_state) * len(init_state[0]) < 9:
+#         raise Exception("length and height of initial stage is too small to compute")
+
+#     new_state = dead_state(len(init_state[0]), len(init_state))
+
+    
+#     for i in range(len(init_state)):
+#         for j in range(len(init_state[i])):
+#             new_state[i][j] = update_cell([i, j], init_state)
+#     return new_state
+        
+            
+            
+#     return new_state
 
 if __name__ == "__main__":
     # makes sure this code runs only when I directly run it
     # and not when file is imported as a module
     state = random_state(10, 10)
-    next_state = next_board_state(state)
+    next_state = update_cell([9,9], state)
+
     # render(state)  
     # print("**************************************************")
     # render(next_state)
+    print(state)
+    print("***********************")
     print(next_state)
 
+    
 
 
 
